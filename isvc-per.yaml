@@ -1,0 +1,15 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: per-custom-model
+spec:
+  predictor:
+    containers:
+      - name: kserve-container
+        image: ghcr.io/revit13/per-custom-model:v12
+        imagePullPolicy: IfNotPresent
+        env:
+           - name: STORAGE_URI
+             value: "s3://per-demo-sep"
+
+
