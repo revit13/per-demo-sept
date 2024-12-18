@@ -73,13 +73,14 @@ jupyter notebook
 
 PER custom perdictor is written based on the instructions in the kserve [tutorial](https://kserve.github.io/website/0.12/modelserving/v1beta1/custom/custom_model/). 
 
-To make changes to the predictor's code execute the following commands:
+To make changes to the predictor's code execute the following commands
+which copies files from [custom_model_code](./custom_model_code) directory:
 
 ```bash
 git clone https://github.com/kserve/kserve.git
 cd python
-cp [custom_model_code/custom_model.Dockerfile](custom_model_code/custom_model.Dockerfile) .
-cp [custom_model_code/model.py](custom_model_code/model.py) custom_model/
+cp custom_model_code/custom_model.Dockerfile .
+cp custom_model_code/model.py custom_model/
 ```
 
 Create the docker image of the perdictor and push it to the registry:
