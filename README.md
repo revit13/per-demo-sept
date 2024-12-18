@@ -12,11 +12,12 @@ Deploy kserve 1.2.0 and its prerequisites on the cluster using kserve [quick sta
 kubectl create namespace per
 ```
 
-## Create an InferenceService
+## Create a ClusterServingRuntime and InferenceService
 
-Before exeuting the following command make sure the s3 credentials of the bucket holding the model are stored in a secret similar to the description
+Before exeuting the following command make sure the s3 credentials of the bucket holding the model are stored in a secret in per namespace similar to the description
 in [this](https://kserve.github.io/website/latest/modelserving/kafka/kafka/#create-s3-secret-for-minio-and-attach-to-service-account) section.
 ```bash
+kubectl apply -f csr-per.yaml -n per
 kubectl apply -f isvc-per.yaml -n per 
 ```
 
@@ -39,6 +40,10 @@ kubectl port-forward --namespace istio-system svc/${INGRESS_GATEWAY_SERVICE} 808
 curl -H "Content-Type: application/json" -H "Host: per-custom-model.per.example.com"  localhost:8080/v1/models/per-custom-model
 ```
 
+
+```bash
+{"name":"per-custom-model","ready":true}
+```
 ## Run the notebook
 
 To run Jupyter notebook execute the commands from the notebook directory:
@@ -50,6 +55,8 @@ cd notebook
 ### Install dependencies
 
 ```bash
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -58,6 +65,7 @@ pip install -r requirements.txt
 Before executing the notebook make sure the input is located in `notebook` directory.
 
 ```bash
+pip install jupyter
 jupyter notebook
 ```
 
@@ -70,6 +78,7 @@ To make changes to the predictor's code execute the following commands:
 ```bash
 git clone https://github.com/kserve/kserve.git
 cd python
+cp custom_model_code/custom_model.Dockerfile custom_model/
 cp custom_model_code/model.py custom_model/
 ```
 

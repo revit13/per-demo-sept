@@ -24,11 +24,12 @@ import base64
 import io
 import numpy as np
 import os
+from kserve.storage import Storage
 
 from kserve import Model, ModelServer, model_server, InferRequest, InferOutput, InferResponse
 from kserve.errors import InvalidInput
 from kserve.utils.utils import generate_uuid
-
+MODEL_EXTENSIONS = ".pt"
 
 class Actor(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
@@ -49,14 +50,28 @@ class Actor(nn.Module):
 # the input can be raw image base64 encoded bytes or image tensor which is pre-processed by transformer
 # and then passed to the custom predictor, the output is the prediction response.
 class PerModel(Model):
-    def __init__(self, name: str):
+    def __init__(self, name: str, model_dir: str):
         super().__init__(name)
+        self.model_dir = model_dir
         self.actor = None
         self.ready = False
         self.load()
 
     def load(self):
-        actor_file_path="/mnt/models/per-demo-sep/actor_DDPGAgent_38nodes_500eps.pt"
+        model_path = Storage.download(self.model_dir)
+        model_files = []
+        for file in os.listdir(model_path):
+            file_path = os.path.join(model_path, file)
+            if os.path.isfile(file_path) and file.endswith(MODEL_EXTENSIONS):
+                model_files.append(file_path)
+        if len(model_files) == 0:
+            raise ModelMissingError(model_path)
+        elif len(model_files) > 1:
+            raise RuntimeError(
+                "More than one model file is detected, "
+                f"Only one is allowed within model_dir: {model_files}"
+            )
+        actor_file_path=model_files[0]
         self.model = torch.load(actor_file_path, weights_only=True, map_location=torch.device('cpu'))
         # The ready flag is used by model ready endpoint for readiness probes,
         # set to True when model is loaded successfully without exceptions.
@@ -131,9 +146,12 @@ class PerModel(Model):
 
 
 parser = argparse.ArgumentParser(parents=[model_server.parser])
+parser.add_argument(
+            "--model_dir", required=True, help="A local path to the model directory"
+            )
 args, _ = parser.parse_known_args()
 
 if __name__ == "__main__":
-    model = PerModel("per-custom-model")
+    model = PerModel(args.model_name, args.model_dir)
     model.load()
     ModelServer().start([model])

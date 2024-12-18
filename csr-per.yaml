@@ -1,0 +1,27 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ClusterServingRuntime
+metadata:
+  name: per-custom-model
+spec:
+  supportedModelFormats:
+    - name: "custom-per"
+      version: "1"
+      autoSelect: true
+  containers:
+    - name: kserve-container
+      env:
+        - name: MODELS_DIR
+          value: /mnt/models
+      image: ghcr.io/revit13/per-custom-model:v22
+      imagePullPolicy: Always
+      args:
+        - --model_name={{.Name}}
+        - --model_dir=/mnt/models
+        - --http_port=8080
+      resources:
+        requests:
+          cpu: "1"
+          memory: 2Gi
+        limits:
+          cpu: "1"
+          memory: 2Gi
