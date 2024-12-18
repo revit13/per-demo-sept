@@ -78,8 +78,8 @@ To make changes to the predictor's code execute the following commands:
 ```bash
 git clone https://github.com/kserve/kserve.git
 cd python
-cp custom_model_code/custom_model.Dockerfile .
-cp custom_model_code/model.py custom_model/
+cp [custom_model_code/custom_model.Dockerfile](custom_model_code/custom_model.Dockerfile) .
+cp [custom_model_code/model.py](custom_model_code/model.py) custom_model/
 ```
 
 Create the docker image of the perdictor and push it to the registry:
