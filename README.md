@@ -115,10 +115,11 @@ pip install jupyter
 jupyter notebook
 ```
 
-**Note:** for encrypted model inference the first line in the nodebook should be:
+**Note:** for encrypted model inference the first two lines in the nodebook should be:
 
 ```bash
 %env MODEL_NAME=per-custom-encrypted-model
+HOSTNAME=!(kubectl get inferenceservice "per-custom-encrypted-model" -o jsonpath='{.status.url}' | cut -d "/" -f 3)
 ```
 
 # Update PER custom predictor

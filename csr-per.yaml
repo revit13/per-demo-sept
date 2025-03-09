@@ -12,7 +12,7 @@ spec:
       env:
         - name: MODELS_DIR
           value: /mnt/models
-      image: ghcr.io/revit13/per-quant-model:v78
+      image: ghcr.io/revit13/per-custom-model:v100
       imagePullPolicy: Always
       args:
         - --model_name={{.Name}}
