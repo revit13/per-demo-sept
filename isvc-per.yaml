@@ -7,4 +7,4 @@ spec:
     model:
       modelFormat:
         name: custom-per
-      storageUri: s3://per-demo-sep
+      storageUri: s3://per-bucket/actor_DDPGAgent_38nodes_500eps.pt

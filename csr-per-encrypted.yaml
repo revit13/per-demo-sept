@@ -1,10 +1,10 @@
 apiVersion: serving.kserve.io/v1alpha1
 kind: ClusterServingRuntime
 metadata:
-  name: per-custom-model
+  name: per-custom-encrypted-model
 spec:
   supportedModelFormats:
-    - name: "custom-per"
+    - name: "per-custom-encrypted-model"
       version: "1"
       autoSelect: true
   containers:
@@ -12,7 +12,7 @@ spec:
       env:
         - name: MODELS_DIR
           value: /mnt/models
-      image: ghcr.io/revit13/per-quant-model:v78
+      image: ghcr.io/revit13/per-encrypted-model:v7
       imagePullPolicy: Always
       args:
         - --model_name={{.Name}}

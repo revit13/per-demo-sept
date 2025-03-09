@@ -1,0 +1,10 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: per-custom-encrypted-model
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: per-custom-encrypted-model
+      storageUri: s3://per-bucket/actor_quantized_DDPGAgent_38nodes_500eps.pt
