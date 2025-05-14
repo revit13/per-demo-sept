@@ -170,7 +170,7 @@ docker push ${DOCKER_USER}/per-encrypted-model:v1
 Next, update the [csr-per-encrypted.yaml](./csr-per-encrypted.yaml) ClusterServingRuntime with the new docker image tag and redeploy it.
 
 
-## Running on aarch64
+### Running on aarch64
 
 To run the inference on an aarch64 machine, some minor adjustments to the above steps are needed:
 
@@ -182,5 +182,5 @@ These resources reference a custom Docker image built specifically for the aarch
 3. In `Run the notebook` section, execute the following Python command to run the inference:
 
 ```bash
-MODEL_NAME=per-custom-model-edge HOSTNAME=per-custom-model-edge.per.example.com INGRESS_HOST=localhost INGRESS_PORT=8080 SERVICE_HOSTNAME=per-custom-model-edge.per.example.com python notebook.py
+MODEL_NAME=per-custom-model-edge HOSTNAME=per-custom-model-edge.per.example.com INGRESS_HOST=localhost INGRESS_PORT=8080 SERVICE_HOSTNAME=per-custom-model-edge.per.example.com python notebook_edge.py
 ```
