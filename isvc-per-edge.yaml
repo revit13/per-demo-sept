@@ -1,0 +1,10 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: per-custom-model-edge
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: custom-per-edge
+      storageUri: s3://per-bucket/actor_DDPGAgent_38nodes_500eps.pt

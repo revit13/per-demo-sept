@@ -168,3 +168,19 @@ docker push ${DOCKER_USER}/per-encrypted-model:v1
 ```
 
 Next, update the [csr-per-encrypted.yaml](./csr-per-encrypted.yaml) ClusterServingRuntime with the new docker image tag and redeploy it.
+
+
+## Running on aarch64
+
+To run the inference on an aarch64 machine, some minor adjustments to the above steps are needed:
+
+1. When deploying minio use [Multi-platform image](https://hub.docker.com/layers/minio/minio/RELEASE.2025-03-12T18-04-18Z-cpuv1/images/sha256-a5f9efb38389116afc132a658854249802824e4109bbe9fb136c885ddcb8f244).
+
+2. Apply `csr-per-edge.yaml` and  `isvc-per-edge.yaml` in the `Create a ClusterServingRuntime and InferenceService` section above.
+These resources reference a custom Docker image built specifically for the aarch64 architecture. The image was created following a process similar to that outlined in the `Update PER custom predictor` section, with the key difference being the use of a different version of torch than the one specified in the KServe source.
+
+3. In `Run the notebook` section, execute the following Python command to run the inference:
+
+```bash
+MODEL_NAME=per-custom-model-edge HOSTNAME=per-custom-model-edge.per.example.com INGRESS_HOST=localhost INGRESS_PORT=8080 SERVICE_HOSTNAME=per-custom-model-edge.per.example.com python notebook.py
+```
