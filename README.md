@@ -182,5 +182,6 @@ These resources reference a custom Docker image built specifically for the aarch
 3. In `Run the notebook` section, execute the following Python command to run the inference:
 
 ```bash
-MODEL_NAME=per-custom-model-edge HOSTNAME=per-custom-model-edge.per.example.com INGRESS_HOST=localhost INGRESS_PORT=8080 SERVICE_HOSTNAME=per-custom-model-edge.per.example.com python notebook_edge.py
+PATH_TO_INPUT=<PATH/TO/reduced_tronchetto_array.pt>
+MODEL_NAME=per-custom-model-edge HOSTNAME=per-custom-model-edge.per.example.com INGRESS_HOST=localhost INGRESS_PORT=8080 SERVICE_HOSTNAME=per-custom-model-edge.per.example.com python notebook_edge.py $PATH_TO_INPUT
 ```
