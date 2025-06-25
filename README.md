@@ -108,7 +108,18 @@ pip install -r requirements.txt
 
 ### Run the sample notebook in jupyter
 
-Before executing the notebook make sure the input is located in `notebook` directory.
+Before running the notebook, ensure the following environment variables are exported. 
+These variables specify the S3 location of the input data. For example:
+
+```bash
+export ACCESS_KEY=minio
+export SECRET_KEY=minio123
+export S3_ENDPOINT="http://127.0.0.1:9000"
+export BUCKET_NAME=per-input
+export FILENAME=reduced_tronchetto_array.pt
+```
+
+Next launch the notebook:
 
 ```bash
 pip install jupyter
