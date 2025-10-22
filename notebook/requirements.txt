@@ -1,7 +1,5 @@
 jupyter
-numpy
-pillow
-protobuf
 requests
 torch==2.4.1
 boto3
+dotenv

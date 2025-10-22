@@ -21,7 +21,9 @@ response = s3.get_object(Bucket=bucket_name, Key=key)
 
 # Read binary stream and load with torch
 buffer = io.BytesIO(response['Body'].read())
-array = torch.load(buffer, map_location='cpu')  # or 'cuda' if needed
+#array = torch.load(buffer, map_location='cpu')  # or 'cuda' if needed
+array = np.load(buffer)
+array = array.flatten()
 #array = torch.load('./reduced_tronchetto_array.pt')
 
 # Create request message to be sent to the predictor
@@ -51,7 +53,10 @@ print(json.dumps(message_data))
 response = requests.post(predictor_url, headers=request_headers, data=json.dumps(message_data))
 print(response)
 response_message = json.loads(response.text)
-output1 = np.array(response_message["outputs"][0]['data'], dtype=np.float32)
+print(f"REPONSE i{response_message}")
+output_dict = response_message["outputs"][0]['data']
+output_dict = {int(k): v for k, v in output_dict.items()}
+#output1 = np.array(response_message["outputs"][0]['data'], dtype=np.float32)
 
 # postprocess
-print(output1)
+print(output_dict)
